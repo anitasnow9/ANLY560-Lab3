@@ -27,8 +27,8 @@ class Actor
         self.last_name = last_name
         self.last_update = last_update
 
-act_1 = Actor(NULL,'Ning','Wang','2019-11-19')
-act_2 = Actor(NULL,'User','Test','2019-11-19')
+act_1 = Actor('1234567','Ning','Wang',NULL)
+act_2 = Actor('7654321','User','Test',NULL)
     
 add_actor = ("INSERT INTO actor "
              "(actor_id, first_name, last_name, last_update) "
@@ -36,12 +36,8 @@ add_actor = ("INSERT INTO actor "
     
 cursor.execute(add_actor, act_1)
 cursor.execute(add_actor, act_2)
-act_no = cursor.lastrowid
 
-connection.commit()
-connection.close()
-
-sql_command = """SELECT * FROM actor WHERE actor_id = act_no"""
+sql_command = """SELECT * FROM actor WHERE last_update = (SELECT MAX(last_update) FROM actor)"""
 cursor.execute(sql_command)
 
-
+cursor.close()
